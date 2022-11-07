@@ -1,5 +1,6 @@
 import ld from "lodash";
 import { parseTime } from "../helpers/parseTime.js";
+import { expect, it, beforeEach } from "@jest/globals";
 
 const data = [
   {
@@ -41,23 +42,23 @@ describe("`parseTime` functions", () => {
   it("splits by alpha delim", () => {
     times.forEach((time) => {
       const output = parseTime(time.input);
-      expect(output.length).toBe(2);
+      expect(output).toHaveLength(2);
     });
   });
 
   it("converts time into an array of int", () => {
     times.forEach((time) => {
       const output = parseTime(time.input);
-      expect(typeof output[0]).toBe("number");
-      expect(typeof output[1]).toBe("number");
+      expect(output[0]).toBeGreaterThanOrEqual(0);
+      expect(output[1]).toBeGreaterThanOrEqual(0);
     });
   });
 
   it("formats properly", () => {
     for (let i = 0; i < data.length; i++) {
       const output = parseTime(times[i].input);
-      expect(output[0]).toEqual(data[i].expected[0]);
-      expect(output[1]).toEqual(data[i].expected[1]);
+      expect(output[0]).toBe(data[i].expected[0]);
+      expect(output[1]).toBe(data[i].expected[1]);
     }
   });
 });
