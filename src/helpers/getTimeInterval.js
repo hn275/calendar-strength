@@ -9,8 +9,8 @@
  * eg: getTimeInterval(900, 1200) returns [900, 930, 1000, 1030, 1100, 1130, 1200]
  */
 export const getTimeInterval = (startTime, endTime) => {
-  if (typeof startTime !== 'number' || typeof endTime !== 'number') {
-    throw new Error(
+  if (typeof startTime !== "number" || typeof endTime !== "number") {
+    throw new TypeError(
       `invalid argument: expected type number, got ${typeof startTime} ${typeof endTime}`
     );
   }
