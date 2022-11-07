@@ -62,9 +62,9 @@ const input = [
 ];
 
 const expectedDates = [
-  { date: 20221030, startTime: 930, endTime: 1400 },
-  { date: 20221031, startTime: 1330, endTime: 1700 },
-  { date: 20221101, startTime: 800, endTime: 1730 },
+  { date: 20221030, time: { start: 930, end: 1400 } },
+  { date: 20221031, time: { start: 1330, end: 1700 } },
+  { date: 20221101, time: { start: 800, end: 1730 } },
 ];
 
 const expectedPeople = [
