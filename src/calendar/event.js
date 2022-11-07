@@ -1,5 +1,20 @@
 import { Calendar } from "./calendar.js";
 
+/**
+ * @class Event
+ * @constructor
+ * @params {object} event: has the shape like following
+ * {
+ *   title: string,
+ *   description: string,
+ *   time: {
+ *     startTime: string,
+ *     endTime: string,
+ *   }
+ * }
+ *
+ * @method saveToCalendar: called to save the object to Calendar
+ */
 class Event extends Calendar {
   start;
   end;
