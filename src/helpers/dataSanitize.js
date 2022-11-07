@@ -1,50 +1,51 @@
 import { parseTime } from "./parseTime.js";
 
 export const dataSanitize = (availabilities) => {
-  const people = [];
   const dates = [];
+  const people = [];
 
-  for (let availability of availabilities) {
-    const timesAvailable = [];
-    const times = availability.times;
+  for (const entry of availabilities) {
+    const timesAvailable = []; // a person all available times
+    const allAvailableTimes = entry.times;
 
-    for (let time of times) {
-      const [date, startTime] = parseTime(time.startTime);
-      const [_, endTime] = parseTime(time.endTime);
+    // Get all available time of a person entry
+    for (const time of allAvailableTimes) {
+      const [date, start] = parseTime(time.startTime);
+      const [_, end] = parseTime(time.endTime);
 
       // Extracting dates
-      const matched = dates.find((el) => el.date === date);
+      const matched = dates.find((dateEntry) => dateEntry.date === date);
+
       if (matched) {
-        if (startTime < matched.time.start) matched.time.start = startTime;
-        if (endTime > matched.time.end) matched.time.end = endTime;
+        // if date exists, fix start/end time
+        if (start < matched.time.start) matched.time.start = start;
+        if (end > matched.time.end) matched.time.end = end;
       } else {
+        // if date doesn't exists, add a new one
         const newDateEntry = {
           date,
-          time: {
-            start: startTime,
-            end: endTime,
-          },
+          time: { start, end },
         };
         dates.push(newDateEntry);
       }
 
-      const timeEntry = {
+      // Collecting a sanitized time entry
+      const newTimeEntry = {
         date: date,
-        time: {
-          start: startTime,
-          end: endTime,
-        },
+        time: { start, end },
       };
-      timesAvailable.push(timeEntry);
+
+      timesAvailable.push(newTimeEntry);
     }
 
-    // Extracting person avail
-    const entry = {
-      name: availability.name,
-      number: availability.number,
-      timesAvailable: timesAvailable, // start to end time intervals
+    // Get all people avail
+    const newPersonEntry = {
+      name: entry.name,
+      number: entry.number,
+      timesAvailable,
     };
-    people.push(entry);
+
+    people.push(newPersonEntry);
   }
 
   return [dates, people];
