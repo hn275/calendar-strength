@@ -15,15 +15,17 @@ export const dataSanitize = (availabilities) => {
       // Extracting dates
       const matched = dates.find((el) => el.date === date);
       if (matched) {
-        if (startTime < matched.startTime) matched.startTime = startTime;
-        if (endTime > matched.endTime) matched.endTime = endTime;
+        if (startTime < matched.time.start) matched.time.start = startTime;
+        if (endTime > matched.time.end) matched.time.end = endTime;
       } else {
-        const newEntry = {
+        const newDateEntry = {
           date,
-          startTime,
-          endTime,
+          time: {
+            start: startTime,
+            end: endTime,
+          },
         };
-        dates.push(newEntry);
+        dates.push(newDateEntry);
       }
 
       const timeEntry = {
