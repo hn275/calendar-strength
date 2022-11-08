@@ -64,7 +64,7 @@ const input = [
 const expectedDates = [
   {
     date: 20221030,
-    time: [
+    times: [
       { start: 930, end: 1000 },
       { start: 1000, end: 1100 },
       { start: 1100, end: 1130 },
@@ -74,14 +74,14 @@ const expectedDates = [
   },
   {
     date: 20221031,
-    time: [
+    times: [
       { start: 1330, end: 1500 },
       { start: 1500, end: 1700 },
     ],
   },
   {
     date: 20221101,
-    time: [
+    times: [
       { start: 800, end: 900 },
       { start: 900, end: 1100 },
       { start: 1100, end: 1630 },
@@ -95,27 +95,27 @@ const expectedPeople = [
     name: "Ben",
     number: "125",
     timesAvailable: [
-      { date: 20221030, time: { start: 930, end: 1100 } },
-      { date: 20221031, time: { start: 1330, end: 1700 } },
-      { date: 20221101, time: { start: 800, end: 1630 } },
+      { date: 20221030, times: { start: 930, end: 1100 } },
+      { date: 20221031, times: { start: 1330, end: 1700 } },
+      { date: 20221101, times: { start: 800, end: 1630 } },
     ],
   },
   {
     name: "Aman",
     number: "143",
     timesAvailable: [
-      { date: 20221030, time: { start: 1000, end: 1200 } },
-      { date: 20221031, time: { start: 1330, end: 1500 } },
-      { date: 20221101, time: { start: 900, end: 1630 } },
+      { date: 20221030, times: { start: 1000, end: 1200 } },
+      { date: 20221031, times: { start: 1330, end: 1500 } },
+      { date: 20221101, times: { start: 900, end: 1630 } },
     ],
   },
   {
     name: "Hal",
     number: "123",
     timesAvailable: [
-      { date: 20221030, time: { start: 1130, end: 1400 } },
-      { date: 20221031, time: { start: 1500, end: 1700 } },
-      { date: 20221101, time: { start: 1100, end: 1730 } },
+      { date: 20221030, times: { start: 1130, end: 1400 } },
+      { date: 20221031, times: { start: 1500, end: 1700 } },
+      { date: 20221101, times: { start: 1100, end: 1730 } },
     ],
   },
 ];

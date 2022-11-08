@@ -1,12 +1,12 @@
 import { parseTime } from "./parseTime.js";
 
-export const dataSanitize = (availabilities) => {
-  const allDates = [];
+const dataSanitize = (availabilities) => {
   const dates = [];
   const people = [];
+  const newAllDates = getAllDates(availabilities);
 
   for (const entry of availabilities) {
-    const timesAvailable = []; // a person all available times
+    const personAvailability = []; // a person all available times
     const allAvailableTimes = entry.times;
 
     const allTimeIntervals = [];
@@ -19,63 +19,51 @@ export const dataSanitize = (availabilities) => {
         date,
         times: { start, end },
       };
-      timesAvailable.push(personTimeEntry);
+      personAvailability.push(personTimeEntry);
 
       const matchedStartTime = allTimeIntervals.find((el) => el === start);
       if (!matchedStartTime) allTimeIntervals.push(start);
 
       const matchedEndTime = allTimeIntervals.find((el) => el === end);
       if (!matchedEndTime) allTimeIntervals.push(end);
-
-      const matchedDate = allDates.find((e) => e.date === date);
-      if (matchedDate) {
-        for (const time of allTimeIntervals) {
-          const exists = matchedDate.times.find((el) => el === time);
-          if (!exists) {
-            matchedDate.times.push(time);
-          }
-        }
-      } else {
-        const dateEntry = {
-          date,
-          times: allTimeIntervals,
-        };
-        allDates.push(dateEntry);
-      }
     }
+    console.log(personAvailability);
 
-    // Sorting all dates in descending order
-    allDates.sort((prev, next) => prev.date - next.date);
     // Sorting all time intervals in date in ascending order
-    for (const date of allDates) {
-      date.times.sort((prev, next) => prev - next);
-    }
-
-    // Sanitizing dates info
-    for (const entry of allDates) {
-      const dateEntry = {
-        date: entry.date,
-        times: sanitizeTime(entry.times),
-      };
-      dates.push(dateEntry);
-    }
 
     // Sanitizing people info
     const newPersonEntry = {
       name: entry.name,
       number: entry.number,
-      timesAvailable,
+      timesAvailable: personAvailability,
     };
 
     people.push(newPersonEntry);
   }
 
-  return [allDates, people];
+  return [dates, people];
 };
+
+/**
+ * getAllDates
+ * @params {[]object} dates: raw array passed from main function
+ * @return {[]number} all unique dates
+ */
+function getAllDates(dates) {
+  const allDates = new Set();
+  for (const entry of dates) {
+    for (const time of entry.times) {
+      const [startDate] = parseTime(time.startTime);
+      const [endDate] = parseTime(time.endTime);
+      allDates.add(startDate, endDate);
+    }
+  }
+  return [...allDates];
+}
 
 function sanitizeTime(times) {
   const timeOutput = [];
-  for (let i = 0; i < times.length; i++) {
+  for (let i = 0; i < times.length - 1; i++) {
     const timeEntry = {
       start: times[i],
       end: times[i + 1],
@@ -85,3 +73,5 @@ function sanitizeTime(times) {
 
   return timeOutput;
 }
+
+export { dataSanitize, sanitizeTime };

@@ -72,4 +72,4 @@ const data = {
 };
 
 const [dates, people] = splitAvailabilities(data);
-console.log(dates);
+// console.log(dates);
