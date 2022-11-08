@@ -1,47 +1,70 @@
 import { parseTime } from "./parseTime.js";
 
 const dataSanitize = (availabilities) => {
-  const dates = [];
-  const people = [];
-  const newAllDates = getAllDates(availabilities);
+  const allDateData = getAllDates(availabilities);
+  const timeByDate = [];
 
-  for (const entry of availabilities) {
-    const personAvailability = []; // a person all available times
-    const allAvailableTimes = entry.times;
-
-    const allTimeIntervals = [];
-    // Get all available time intervals
-    for (const time of allAvailableTimes) {
-      const [date, start] = parseTime(time.startTime);
-      const [_, end] = parseTime(time.endTime);
-
-      const personTimeEntry = {
-        date,
-        times: { start, end },
-      };
-      personAvailability.push(personTimeEntry);
-
-      const matchedStartTime = allTimeIntervals.find((el) => el === start);
-      if (!matchedStartTime) allTimeIntervals.push(start);
-
-      const matchedEndTime = allTimeIntervals.find((el) => el === end);
-      if (!matchedEndTime) allTimeIntervals.push(end);
+  /** FORMATTING TIMES **/
+  // get all times by date
+  for (const date of allDateData) {
+    const newDateEntry = {
+      date: date,
+      times: new Set(),
+    };
+    for (const entry of availabilities) {
+      const times = entry.times;
+      for (const time of times) {
+        const [entryDate, startTime] = parseTime(time.startTime);
+        const [_, endTime] = parseTime(time.endTime);
+        if (entryDate === newDateEntry.date) {
+          newDateEntry.times.add(startTime);
+          newDateEntry.times.add(endTime);
+        }
+      }
     }
-    console.log(personAvailability);
+    newDateEntry.times = [...newDateEntry.times]; // convert from set to array
+    newDateEntry.times.sort((prev, next) => prev - next); // sort ascending order
+    timeByDate.push(newDateEntry);
+  }
+  /** get all times by date ends here
+   * after this block, the `timeByDate` has the shape:
+   *
+   *[
+   *  { date: 20221030, times: [ 930, 1000, 1100, 1130, 1200, 1400 ] },
+   *  { date: 20221031, times: [ 1330, 1500, 1700 ] },
+   *  { date: 20221101, times: [ 800, 900, 1100, 1630, 1730 ] }
+   *]
+   */
 
-    // Sorting all time intervals in date in ascending order
+  // Reformating `timeByDate`
+  const formatDateData = [];
+  for (const date of timeByDate) {
+    const newFormatDateEntry = {
+      date: date.date,
+      times: sanitizeTime(date.times),
+    };
+    formatDateData.push(newFormatDateEntry);
+  }
+  // Reformating `timeByDate` ends here - passed tests
 
-    // Sanitizing people info
-    const newPersonEntry = {
+  /** FORMATTING PEOPLE **/
+  const people = [];
+  for (const entry of availabilities) {
+    const newPerson = {
       name: entry.name,
       number: entry.number,
-      timesAvailable: personAvailability,
+      timesAvailable: [],
     };
-
-    people.push(newPersonEntry);
+    for (const time of entry.times) {
+      const [date, start] = parseTime(time.startTime);
+      const [_, end] = parseTime(time.endTime);
+      const newTimeEntry = { date, times: { start, end } };
+      newPerson.timesAvailable.push(newTimeEntry);
+    }
+    people.push(newPerson);
   }
 
-  return [dates, people];
+  return [formatDateData, people];
 };
 
 /**
