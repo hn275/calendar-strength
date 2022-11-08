@@ -7,7 +7,7 @@ describe("isAvailable() test", () => {
     const avail = { start: 1000, end: 1200 };
 
     const output = isAvailable(event, avail);
-    expect(output).toBe(true);
+    expect(output).toBe(false);
   });
 
   it("returns false if is not available", () => {
