@@ -84,6 +84,11 @@ function getAllDates(dates) {
   return [...allDates];
 }
 
+/**
+ * sanitizeTime
+ * @params {[]number} times
+ * @return {[]object} an array of object containing starting and ending time
+ */
 function sanitizeTime(times) {
   const timeOutput = [];
   for (let i = 0; i < times.length - 1; i++) {
@@ -97,4 +102,4 @@ function sanitizeTime(times) {
   return timeOutput;
 }
 
-export { dataSanitize, sanitizeTime };
+export { dataSanitize, sanitizeTime, getAllDates };

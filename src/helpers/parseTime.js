@@ -19,14 +19,15 @@ export const parseTime = (timeStr) => {
 
   const [date, time] = timeMatched;
 
-  // parsing date
+  /* PARSING DATE */
   let dateInt;
   dateInt = date.match(/\d/g);
   dateInt = dateInt.join("");
   dateInt = Number(dateInt);
 
-  // parsing time
+  /* PARSING TIME */
   let timeInt;
+  timeInt = time.split("-")[0]; // removing the `-8:00` flag at the end
   timeInt = time.match(/\d/g);
   timeInt = timeInt.join("");
   timeInt = timeInt.slice(0, 4);
